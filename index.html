@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Acceso al Sistema - Bucle While</title>
+    
+    
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            padding: 30px;
+            max-width: 400px;
+            margin: auto;
+        }
+        h2 {
+            color: #333;
+        }
+        form {
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 2px 5px rgba(0,0,0,0.15);
+        }
+        input[type="password"] {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+        }
+        button {
+            padding: 8px 15px;
+            margin-right: 5px;
+            cursor: pointer;
+            border: none;
+            border-radius: 4px;
+            background-color: #007bff;
+            color: white;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #mensajeLogin {
+            font-weight: bold;
+            margin-top: 15px;
+        }
+        #intentosTexto {
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <h2>Módulo de Inicio de Sesión</h2> 
+    <form id="loginForm" onsubmit="return false;">
+        <label for="claveInput">Ingrese su Contraseña:</label><br>
+        <input type="password" id="claveInput"><br><br>
+        
+        <button type="button" onclick="validarAcceso()">Ingresar</button>
+        
+        <button type="button" onclick="reintentar()">Reintentar</button>
+    </form>
+
+    <p id="mensajeLogin"></p>
+    <p id="intentosTexto">Intentos fallidos: 0 / 3</p>
+
+    
+    -->
+
+    <script>
+        
+        const CLAVE_CORRECTA = "Senati";
+        let intentosFallidos = 0;
+        let bloqueado = false;
+
+        function validarAcceso() {
+            
+            if (bloqueado) {
+                document.getElementById("mensajeLogin").innerText = "ACCESO BLOQUEADO";
+                return;
+            }
+
+            let claveIngresada = document.getElementById("claveInput").value; 
+
+            
+            if (claveIngresada === CLAVE_CORRECTA)
+            {
+                document.getElementById("mensajeLogin").innerText = "Sesión iniciada correctamente.";
+                document.getElementById("claveInput").value = "";
+            }
+            else
+            {
+                intentosFallidos++; 
+                document.getElementById("intentosTexto").innerText = "Intentos fallidos: " + intentosFallidos + " / 3";
+
+                
+                let contador = 0;
+                while (contador < intentosFallidos)
+                {
+                    if (intentosFallidos >= 3)
+                    {
+                        bloqueado = true;
+                    }
+                    contador++;
+                }
+
+                
+                if (bloqueado) {
+                    document.getElementById("mensajeLogin").innerText = "Superó el límite de 3 intentos. Su cuenta ha sido bloqueada.";
+                    
+                    
+                    document.getElementById("claveInput").disabled = true; 
+                } else {
+                    document.getElementById("mensajeLogin").innerText = "Contraseña incorrecta. Intente de nuevo.";
+                }
+            }
+        }
+
+        
+        function reintentar() {
+            let campoClave = document.getElementById("claveInput");
+            campoClave.value = ""; 
+            campoClave.focus();   
+        }
+    </script>
+</body>
+</html>
+
